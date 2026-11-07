@@ -5,39 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mots mêlés – le rebranding</title>
 <style>
-:root{--bg:#f4f1ea;--fg:#16181d;--muted:#5b5f66;--card:#ffffff;--line:#ddd8cc;--acc:#ff5a1f;--def:#16181d;--deffg:#f4f1ea;--ok:#2e7d4f}
-@media (prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#f4f1ea;--muted:#aaa69c;--card:#23262e;--line:#383c46;--def:#f4f1ea;--deffg:#16181d;--ok:#5fcf8a}}
+:root{--bg:#ffffff;--fg:#0b1f4d;--muted:#4a5a85;--card:#eef3ff;--line:#c7d6f5;--acc:#1d4ed8;--def:#0b2a6f;--deffg:#ffffff;--ok:#1f7a45;--acct:#1d4ed8}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1b45;--fg:#ffffff;--muted:#a9bbe8;--card:#12296b;--line:#2a4796;--acc:#2563eb;--def:#ffffff;--deffg:#0b2a6f;--ok:#7be0a4;--acct:#9ec1ff}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.4}
-main{max-width:1100px;margin:0 auto;padding:20px 14px 40px}
+body{-webkit-tap-highlight-color:transparent;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.4}
+main{max-width:1100px;margin:0 auto;padding:20px 14px 40px;text-align:center}
 h1{font-size:clamp(28px,5vw,44px);font-weight:800;margin:0 0 6px}
-h1 span{color:var(--acc)}
+h1 span{color:var(--acct)}
 .sub{margin:0 0 14px;color:var(--muted);font-size:17px}
 .scr{display:none}.scr.on{display:block}
-.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-bottom:14px}
 .pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:600;font-size:16px}
 .pill.live{border-color:var(--ok);color:var(--ok)}
 input{font:inherit;font-size:18px;font-weight:600;padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%;max-width:320px}
 button.ctl{font:inherit;font-weight:700;font-size:18px;border-radius:999px;padding:12px 24px;cursor:pointer;background:var(--card);color:var(--fg);border:1px solid var(--line)}
-button.main{background:var(--acc);color:#16181d;border-color:var(--acc)}
-.home{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
-.play{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
+.home{display:flex;flex-direction:column;gap:14px;align-items:center}
+.play{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:center}
 #grid{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;flex:1 1 340px;max-width:600px;user-select:none;-webkit-user-select:none;touch-action:none}
 .cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:clamp(14px,4vw,22px);border-radius:6px}
 .cell.sel{background:var(--def);color:var(--deffg)}
-.cell.fnd{background:var(--acc);color:#16181d;border-color:var(--acc)}
+.cell.fnd{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 .side{flex:1 1 240px}.side h2{font-size:20px;margin:0 0 10px}
-#words{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+#words{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 #words li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:18px;font-weight:700}
 #words li.found{text-decoration:line-through;opacity:.5;border-color:var(--ok)}
 #msg{margin:14px 0 0;font-size:20px;font-weight:700;min-height:30px}
-.dc{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--acc);border-radius:10px;padding:12px 16px;margin-bottom:10px}
+.dc{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--acc);border-radius:10px;padding:12px 16px;margin-bottom:10px}
 .dc b{font-size:20px}.dc p{margin:4px 0 0;font-size:17px}
-.hbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:18px}
+.hbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-bottom:18px}
 .hbar h1{margin:0;font-size:clamp(28px,4vw,52px)}
-.codebox{background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:10px 18px;display:flex;gap:16px;align-items:center}
+.codebox{text-align:left;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:10px 18px;display:flex;gap:16px;align-items:center}
 .codebox .big{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:.12em}
-.codebox small{display:block;color:var(--muted);font-size:14px;word-break:break-all;max-width:260px}
+.codebox small{text-align:left;display:block;color:var(--muted);font-size:14px;word-break:break-all;max-width:260px}
 #qr{background:#fff;padding:6px;border-radius:8px;line-height:0}
 .hwrap{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:20px}
 #slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -45,13 +45,13 @@ button.main{background:var(--acc);color:#16181d;border-color:var(--acc)}
 .slot .k{font-size:clamp(22px,3vw,40px);font-weight:800;letter-spacing:.06em;color:var(--muted)}
 .slot .d{font-size:clamp(16px,1.9vw,26px);margin-top:6px;display:none}
 .slot .by{font-size:clamp(14px,1.5vw,20px);color:var(--ok);font-weight:700;margin-top:6px;display:none}
-.slot.on{border:2px solid var(--acc);border-left-width:10px}
+.slot.on{border:3px solid var(--acc)}
 .slot.on .k{color:var(--fg);letter-spacing:0;font-size:clamp(26px,3.6vw,48px)}
 .slot.on .d,.slot.on .by{display:block}
 .board{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px}
 .board h2{margin:0 0 10px;font-size:clamp(20px,2.2vw,30px)}
-.board ol{margin:0;padding-left:28px;font-size:clamp(18px,2vw,28px);font-weight:700}
-.board li{margin-bottom:6px}
+.board ol{list-style:none;counter-reset:r;margin:0;padding:0;font-size:clamp(18px,2vw,28px);font-weight:700}
+.board li{margin-bottom:6px;counter-increment:r}.board li::before{content:counter(r) ". "}
 @media (max-width:760px){.hwrap{grid-template-columns:1fr}#slots{grid-template-columns:1fr}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
