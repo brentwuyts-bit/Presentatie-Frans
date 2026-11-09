@@ -22,8 +22,8 @@ button.ctl{font:inherit;font-weight:700;font-size:18px;border-radius:999px;paddi
 button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 .home{display:flex;flex-direction:column;gap:14px;align-items:center}
 .play{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:center}
-#grid{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;flex:1 1 340px;max-width:600px;user-select:none;-webkit-user-select:none;touch-action:none}
-.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:clamp(14px,4vw,22px);border-radius:6px}
+#grid{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;flex:1 1 340px;max-width:600px;user-select:none;-webkit-user-select:none;touch-action:none}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:clamp(12px,3.3vw,20px);border-radius:6px}
 .cell.sel{background:var(--def);color:var(--deffg)}
 .cell.fnd{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 .side{flex:1 1 240px}.side h2{font-size:20px;margin:0 0 10px}
@@ -41,12 +41,12 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 #qr{background:#fff;padding:6px;border-radius:8px;line-height:0}
 .hwrap{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:20px}
 #slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.slot{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:14px 20px;min-height:110px;cursor:pointer}
-.slot .k{font-size:clamp(22px,3vw,40px);font-weight:800;letter-spacing:.06em;color:var(--muted)}
-.slot .d{font-size:clamp(16px,1.9vw,26px);margin-top:6px;display:none}
-.slot .by{font-size:clamp(14px,1.5vw,20px);color:var(--ok);font-weight:700;margin-top:6px;display:none}
+.slot{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:10px 16px;min-height:84px;cursor:pointer}
+.slot .k{font-size:clamp(20px,2.4vw,32px);font-weight:800;letter-spacing:.06em;color:var(--muted)}
+.slot .d{font-size:clamp(14px,1.5vw,20px);margin-top:6px;display:none}
+.slot .by{font-size:clamp(13px,1.2vw,17px);color:var(--ok);font-weight:700;margin-top:6px;display:none}
 .slot.on{border:3px solid var(--acc)}
-.slot.on .k{color:var(--fg);letter-spacing:0;font-size:clamp(26px,3.6vw,48px)}
+.slot.on .k{color:var(--fg);letter-spacing:0;font-size:clamp(22px,2.8vw,38px)}
 .slot.on .d,.slot.on .by{display:block}
 .board{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px}
 .board h2{margin:0 0 10px;font-size:clamp(20px,2.2vw,30px)}
@@ -77,7 +77,7 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 <section id="player" class="scr">
 <h1>Mots <span>mêlés</span></h1>
 <p class="sub">Glissez le doigt sur un mot (→ ↓ ↘ ↗ ←) ou touchez sa première, puis sa dernière lettre.</p>
-<div class="bar"><span class="pill" id="fd">Mots : 0/10</span><span class="pill" id="st">Connexion…</span></div>
+<div class="bar"><span class="pill" id="fd">Mots : 0/15</span><span class="pill" id="st">Connexion…</span></div>
 <div class="play">
 <div id="grid"></div>
 <div class="side"><h2>Mots à trouver</h2><ul id="words"></ul><div id="defs"></div></div>
@@ -110,10 +110,15 @@ const W=[
 ["lancement","LANCEMENT","Moment où un produit arrive sur le marché."],
 ["concurrence","CONCURRENCE","Les autres entreprises qui vendent des produits similaires."],
 ["identité","IDENTITE","Ensemble des éléments (couleurs, formes, valeurs) qui définissent une marque."],
-["image","IMAGE","L’impression que le public a d’une marque."]
+["image","IMAGE","L’impression que le public a d’une marque."],
+["client","CLIENT","Personne ou entreprise qui achète un produit ou un service."],
+["valeurs","VALEURS","Principes importants auxquels une marque croit (par exemple l’honnêteté)."],
+["campagne","CAMPAGNE","Série d’actions de communication pour promouvoir une marque ou un produit."],
+["message","MESSAGE","L’idée principale qu’une marque veut faire passer au public."],
+["couleurs","COULEURS","Teintes choisies pour exprimer l’identité d’une marque."]
 ];
 const KEYS=W.map(w=>w[1]);
-const N=12,DIRS=[[0,1],[1,0],[1,1],[-1,1],[0,-1]],$=id=>document.getElementById(id);
+const N=14,DIRS=[[0,1],[1,0],[1,1],[-1,1],[0,-1]],$=id=>document.getElementById(id);
 function show(id){document.querySelectorAll(".scr").forEach(s=>s.classList.toggle("on",s.id===id))}
 
 /* ---------- grille identique pour tout le monde (graine = code) ---------- */
@@ -177,7 +182,7 @@ if(l){let s="";l.forEach(i=>s+=g[i]);const rv=[...s].reverse().join("");w=W.find
 if(w){
 found[w[1]]=Date.now();l.forEach(i=>cells[i].classList.add("fnd"));
 $("w-"+w[1]).classList.add("found");
-const n=Object.keys(found).length;$("fd").textContent="Mots : "+n+"/10";
+const n=Object.keys(found).length;$("fd").textContent="Mots : "+n+"/15";
 const dc=document.createElement("div");dc.className="dc";
 const bb=document.createElement("b");bb.textContent=w[0];const pp=document.createElement("p");pp.textContent=w[2];
 dc.append(bb,pp);$("defs").prepend(dc);
@@ -190,7 +195,7 @@ function startPlayer(code,name){
 roomCode=code;nameV=name||"Joueur";found={};
 db.ref("rooms/"+code+"/host").once("value").then(sn=>{
 if(!sn.exists()){$("homeerr").textContent="Code introuvable. Vérifiez le code affiché au tableau.";return}
-buildPlayer(code);$("fd").textContent="Mots : 0/10";$("defs").textContent="";$("msg").textContent="";
+buildPlayer(code);$("fd").textContent="Mots : 0/15";$("defs").textContent="";$("msg").textContent="";
 show("player");setSt("Connexion…",false);
 pid=Math.random().toString(36).slice(2,10);
 pref=db.ref("rooms/"+code+"/players/"+pid);
@@ -229,7 +234,7 @@ s.querySelector(".by").textContent=best?"Trouvé par "+best.n+(cnt>1?" (+"+(cnt-
 const top=ps.map(p=>{const v=Object.values(p.found);return{name:p.name,n:v.length,last:Math.max(0,...v)}})
 .filter(p=>p.n>0).sort((a,b)=>b.n-a.n||a.last-b.last).slice(0,5);
 const ol=$("rank");ol.textContent="";
-top.forEach(p=>{const li=document.createElement("li");li.textContent=p.name+" · "+p.n+"/10";ol.appendChild(li)})}
+top.forEach(p=>{const li=document.createElement("li");li.textContent=p.name+" · "+p.n+"/15";ol.appendChild(li)})}
 function startHost(){
 show("host");
 if(!db){$("hst").textContent="Firebase n’est pas configuré (voir README)";return}
