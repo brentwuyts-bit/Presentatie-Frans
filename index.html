@@ -35,9 +35,9 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 .dc b{font-size:20px}.dc p{margin:4px 0 0;font-size:17px}
 .hbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-bottom:18px}
 .hbar h1{margin:0;font-size:clamp(28px,4vw,52px)}
-.codebox{text-align:left;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:10px 18px;display:flex;gap:16px;align-items:center}
+.codebox{text-align:center;justify-content:center;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:10px 18px;display:flex;gap:16px;align-items:center}
 .codebox .big{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:.12em}
-.codebox small{text-align:left;display:block;color:var(--fg);font-size:16px;word-break:break-all;max-width:360px}
+.codebox small{text-align:center;display:block;color:var(--fg);font-size:16px;overflow-wrap:anywhere;max-width:none}
 .hwrap{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:20px}
 #slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .slot{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:10px 16px;min-height:84px;cursor:pointer}
