@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mots mêlés – le rebranding</title>
+<title>Mots mêlés – le rebranding (v10)</title>
 <style>
 :root{--bg:#ffffff;--fg:#0b1f4d;--muted:#34436e;--card:#eef3ff;--line:#8fa8e0;--acc:#1d4ed8;--def:#0b2a6f;--deffg:#ffffff;--ok:#1f7a45;--acct:#1d4ed8;--fnd:#1d4ed8;--fndfg:#ffffff}
 @media (prefers-color-scheme:dark){:root{--bg:#0b1b45;--fg:#ffffff;--muted:#d6e2ff;--card:#1e3a8a;--line:#6f8fe0;--acc:#2563eb;--def:#ffffff;--deffg:#0b2a6f;--ok:#7be0a4;--acct:#9ec1ff;--fnd:#5b9bff;--fndfg:#06143a}}
@@ -21,17 +21,17 @@ input{font:inherit;font-size:18px;font-weight:600;padding:12px 18px;border-radiu
 button.ctl{font:inherit;font-weight:700;font-size:18px;border-radius:999px;padding:12px 24px;cursor:pointer;background:var(--card);color:var(--fg);border:1px solid var(--line)}
 button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 .home{display:flex;flex-direction:column;gap:14px;align-items:center}
-.play{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;justify-content:center}
-#grid{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;flex:1 1 340px;max-width:600px;user-select:none;-webkit-user-select:none;touch-action:none}
+.play{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:center}
+#grid{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;flex:1 1 340px;max-width:560px;user-select:none;-webkit-user-select:none;touch-action:none}
 .cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:clamp(12px,3.3vw,20px);border-radius:6px}
 .cell.sel{background:var(--def);color:var(--deffg)}
 .cell.fnd{background:var(--fnd);color:var(--fndfg);border-color:var(--fnd)}
-.side{flex:1 1 240px}.side h2{font-size:20px;margin:0 0 10px}
+.side{flex:1 1 240px;align-self:center}.side h2{font-size:20px;margin:0 0 10px}
 #words{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 #words li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:18px;font-weight:700}
 #words li.found{text-decoration:line-through;opacity:.65;border-color:var(--ok)}
-#msg{margin:14px 0 0;font-size:20px;font-weight:700;min-height:30px}
-.dc{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--acc);border-radius:10px;padding:12px 16px;margin-bottom:10px}
+#msg{margin:0 0 14px;font-size:20px;font-weight:700;min-height:30px}#msg.win{display:inline-block;background:var(--fnd);color:var(--fndfg);padding:10px 20px;border-radius:12px;min-height:0}#defs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:22px}
+.dc{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--acc);border-radius:10px;padding:12px 16px}
 .dc b{font-size:20px}.dc p{margin:4px 0 0;font-size:17px}
 .hbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-bottom:18px}
 .hbar h1{margin:0;font-size:clamp(28px,4vw,52px)}
@@ -76,11 +76,12 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 <h1>Mots <span>mêlés</span></h1>
 <p class="sub">Glissez la souris sur un mot (→ ↓ ↘ ↗ ←) ou cliquez sur sa première, puis sur sa dernière lettre.</p>
 <div class="bar"><span class="pill" id="fd">Mots : 0/15</span><span class="pill" id="st">Connexion…</span></div>
+<div id="msg" aria-live="polite"></div>
 <div class="play">
 <div id="grid"></div>
-<div class="side"><h2>Mots à trouver</h2><ul id="words"></ul><div id="defs"></div></div>
+<div class="side"><h2>Mots à trouver</h2><ul id="words"></ul></div>
 </div>
-<div id="msg" aria-live="polite"></div>
+<div id="defs"></div>
 </section>
 
 <section id="host" class="scr">
@@ -184,7 +185,7 @@ const n=Object.keys(found).length;$("fd").textContent="Mots : "+n+"/15";
 const dc=document.createElement("div");dc.className="dc";
 const bb=document.createElement("b");bb.textContent=w[0];const pp=document.createElement("p");pp.textContent=w[2];
 dc.append(bb,pp);$("defs").prepend(dc);
-$("msg").textContent=n===W.length?"Bravo ! Vous avez tout trouvé !":"Bien joué : « "+w[0]+" » !";
+$("msg").textContent=n===W.length?"Bravo ! Vous avez tout trouvé !":"";$("msg").classList.toggle("win",n===W.length);
 push(w[1])}
 else $("msg").textContent="Ce n’est pas un mot de la liste. Essayez encore !"}
 function setSt(t,ok){const s=$("st");s.textContent=t;s.className="pill"+(ok?" live":"")}
@@ -196,7 +197,7 @@ setTimeout(()=>{if(!done)$("homeerr").textContent="Pas de connexion à Firebase 
 db.ref("rooms/"+code+"/host").once("value").then(sn=>{
 done=true;$("homeerr").textContent="";
 if(!sn.exists()){$("homeerr").textContent="Code introuvable. Vérifiez le code affiché au tableau.";return}
-buildPlayer(code);$("fd").textContent="Mots : 0/15";$("defs").textContent="";$("msg").textContent="";
+buildPlayer(code);$("fd").textContent="Mots : 0/15";$("defs").textContent="";$("msg").textContent="";$("msg").classList.remove("win");
 show("player");setSt("Connexion…",false);
 pid=Math.random().toString(36).slice(2,10);
 pref=db.ref("rooms/"+code+"/players/"+pid);
@@ -210,6 +211,7 @@ const c=$("code").value.trim().toUpperCase();
 if(!db){$("homeerr").textContent="Firebase n’est pas configuré (voir README).";return}
 if(c.length!==4){$("homeerr").textContent="Entrez le code à 4 lettres affiché au tableau.";return}
 $("homeerr").textContent="";startPlayer(c,$("nm").value.trim().slice(0,20))});
+["code","nm"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("join").click()}}));
 
 /* ---------- présentateur ---------- */
 let players=new Map(),manual={};
