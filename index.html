@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mots mêlés – le rebranding</title>
 <style>
-:root{--bg:#ffffff;--fg:#0b1f4d;--muted:#4a5a85;--card:#eef3ff;--line:#c7d6f5;--acc:#1d4ed8;--def:#0b2a6f;--deffg:#ffffff;--ok:#1f7a45;--acct:#1d4ed8}
-@media (prefers-color-scheme:dark){:root{--bg:#0b1b45;--fg:#ffffff;--muted:#a9bbe8;--card:#12296b;--line:#2a4796;--acc:#2563eb;--def:#ffffff;--deffg:#0b2a6f;--ok:#7be0a4;--acct:#9ec1ff}}
+:root{--bg:#ffffff;--fg:#0b1f4d;--muted:#34436e;--card:#eef3ff;--line:#8fa8e0;--acc:#1d4ed8;--def:#0b2a6f;--deffg:#ffffff;--ok:#1f7a45;--acct:#1d4ed8;--fnd:#1d4ed8;--fndfg:#ffffff}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1b45;--fg:#ffffff;--muted:#d6e2ff;--card:#1e3a8a;--line:#6f8fe0;--acc:#2563eb;--def:#ffffff;--deffg:#0b2a6f;--ok:#7be0a4;--acct:#9ec1ff;--fnd:#5b9bff;--fndfg:#06143a}}
 *{box-sizing:border-box}
 body{-webkit-tap-highlight-color:transparent;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.4}
 main{max-width:1100px;margin:0 auto;padding:20px 14px 40px;text-align:center}
 h1{font-size:clamp(28px,5vw,44px);font-weight:800;margin:0 0 6px}
-h1 span{color:var(--acct)}
+h1 span{color:inherit}
 .sub{margin:0 0 14px;color:var(--muted);font-size:17px}
 .scr{display:none}.scr.on{display:block}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-bottom:14px}
@@ -25,11 +25,11 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 #grid{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;flex:1 1 340px;max-width:600px;user-select:none;-webkit-user-select:none;touch-action:none}
 .cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:clamp(12px,3.3vw,20px);border-radius:6px}
 .cell.sel{background:var(--def);color:var(--deffg)}
-.cell.fnd{background:var(--acc);color:#ffffff;border-color:var(--acc)}
+.cell.fnd{background:var(--fnd);color:var(--fndfg);border-color:var(--fnd)}
 .side{flex:1 1 240px}.side h2{font-size:20px;margin:0 0 10px}
 #words{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 #words li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:18px;font-weight:700}
-#words li.found{text-decoration:line-through;opacity:.5;border-color:var(--ok)}
+#words li.found{text-decoration:line-through;opacity:.65;border-color:var(--ok)}
 #msg{margin:14px 0 0;font-size:20px;font-weight:700;min-height:30px}
 .dc{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--acc);border-radius:10px;padding:12px 16px;margin-bottom:10px}
 .dc b{font-size:20px}.dc p{margin:4px 0 0;font-size:17px}
@@ -37,8 +37,7 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 .hbar h1{margin:0;font-size:clamp(28px,4vw,52px)}
 .codebox{text-align:left;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:10px 18px;display:flex;gap:16px;align-items:center}
 .codebox .big{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:.12em}
-.codebox small{text-align:left;display:block;color:var(--muted);font-size:14px;word-break:break-all;max-width:260px}
-#qr{background:#fff;padding:6px;border-radius:8px;line-height:0}
+.codebox small{text-align:left;display:block;color:var(--fg);font-size:16px;word-break:break-all;max-width:360px}
 .hwrap{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:20px}
 #slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .slot{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:10px 16px;min-height:84px;cursor:pointer}
@@ -56,7 +55,6 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 </head>
 <body>
 <main>
@@ -76,7 +74,7 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 
 <section id="player" class="scr">
 <h1>Mots <span>mêlés</span></h1>
-<p class="sub">Glissez le doigt sur un mot (→ ↓ ↘ ↗ ←) ou touchez sa première, puis sa dernière lettre.</p>
+<p class="sub">Glissez la souris sur un mot (→ ↓ ↘ ↗ ←) ou cliquez sur sa première, puis sur sa dernière lettre.</p>
 <div class="bar"><span class="pill" id="fd">Mots : 0/15</span><span class="pill" id="st">Connexion…</span></div>
 <div class="play">
 <div id="grid"></div>
@@ -88,7 +86,7 @@ button.main{background:var(--acc);color:#ffffff;border-color:var(--acc)}
 <section id="host" class="scr">
 <div class="hbar">
 <h1>Mots <span>mêlés</span></h1>
-<div class="codebox"><div><div class="big" id="hcode">····</div><small id="hurl"></small></div><div id="qr"></div></div>
+<div class="codebox"><div><div class="big" id="hcode">····</div><small id="hurl"></small></div></div>
 <span class="pill" id="hst">Connexion…</span>
 </div>
 <div class="hwrap"><div id="slots"></div><div class="board"><h2>Classement</h2><ol id="rank"></ol></div></div>
@@ -193,16 +191,20 @@ function setSt(t,ok){const s=$("st");s.textContent=t;s.className="pill"+(ok?" li
 function push(k){if(pref&&k)pref.child("found/"+k).set(firebase.database.ServerValue.TIMESTAMP)}
 function startPlayer(code,name){
 roomCode=code;nameV=name||"Joueur";found={};
+let done=false;$("homeerr").textContent="Connexion…";
+setTimeout(()=>{if(!done)$("homeerr").textContent="Pas de connexion à Firebase (réseau bloqué ?). Essayez avec les données mobiles."},8000);
 db.ref("rooms/"+code+"/host").once("value").then(sn=>{
+done=true;$("homeerr").textContent="";
 if(!sn.exists()){$("homeerr").textContent="Code introuvable. Vérifiez le code affiché au tableau.";return}
 buildPlayer(code);$("fd").textContent="Mots : 0/15";$("defs").textContent="";$("msg").textContent="";
 show("player");setSt("Connexion…",false);
 pid=Math.random().toString(36).slice(2,10);
 pref=db.ref("rooms/"+code+"/players/"+pid);
+let up=false;setTimeout(()=>{if(!up)setSt("Pas de connexion (réseau bloqué ?)",false)},8000);
 db.ref(".info/connected").on("value",c=>{
-const on=c.val()===true;setSt(on?"Connecté à la classe":"Reconnexion…",on);
+const on=c.val()===true;if(on)up=true;setSt(on?"Connecté à la classe":"Reconnexion…",on);
 if(on){pref.onDisconnect().update({online:false});pref.update({name:nameV,online:true})}})
-}).catch(()=>{$("homeerr").textContent="Connexion impossible. Vérifiez Internet."})}
+}).catch(e=>{done=true;$("homeerr").textContent="Connexion impossible : "+(e&&e.code?e.code:"vérifiez Internet")})}
 $("join").addEventListener("click",()=>{
 const c=$("code").value.trim().toUpperCase();
 if(!db){$("homeerr").textContent="Firebase n’est pas configuré (voir README).";return}
@@ -240,10 +242,10 @@ show("host");
 if(!db){$("hst").textContent="Firebase n’est pas configuré (voir README)";return}
 const code=newCode(),url=location.origin+location.pathname;
 $("hcode").textContent=code;$("hurl").textContent=url+"?room="+code;
-try{if(window.qrcode){const qr=qrcode(0,"M");qr.addData(url+"?room="+code);qr.make();$("qr").innerHTML=qr.createSvgTag(4,0)}}catch(x){}
 db.ref("rooms/"+code+"/host").set(firebase.database.ServerValue.TIMESTAMP).catch(e=>{$("hst").textContent="Erreur Firebase : "+e.code});
+let hok=false;setTimeout(()=>{if(!hok)$("hst").textContent="Pas de connexion à Firebase (réseau bloqué ?)"},8000);
 db.ref("rooms/"+code+"/players").on("value",sn=>{
-const v=sn.val()||{};players=new Map();
+hok=true;const v=sn.val()||{};players=new Map();
 for(const [id,p] of Object.entries(v)){
 if(!p||typeof p!=="object")continue;
 const f={};if(p.found&&typeof p.found==="object")for(const k of KEYS)if(typeof p.found[k]==="number")f[k]=p.found[k];
